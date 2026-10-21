@@ -1,0 +1,15 @@
+{
+  "name": "روایت | فضای نویسندگی",
+  "short_name": "روایت",
+  "description": "فضای شخصی نوشتن رمان، مدیریت فصل‌ها، یادداشت‌ها و خط زمانی",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f9fa",
+  "theme_color": "#123b4a",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123b4a">
+  <meta name="description" content="روایت؛ فضای شخصی نوشتن رمان با ذخیره خودکار، فصل‌ها، یادداشت‌ها، شخصیت‌ها و خط زمانی.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="روایت">
+  <title>روایت | فضای نوشتن رمان</title>
+  <link rel="stylesheet" href="./styles.css?v=2">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="ambient ambient-c"></div>
+  <div class="app-shell">
+    <header class="topbar glass">
+      <a class="brand" href="#" aria-label="روایت - خانه"><span class="brand-icon">ر</span><span><b>روایت</b><small>فضای یکپارچه‌ی نویسندگی</small></span></a>
+      <label class="global-search"><span aria-hidden="true">⌕</span><input id="globalSearch" type="search" placeholder="جست‌وجو در فصل‌ها، یادداشت‌ها و شخصیت‌ها…" autocomplete="off"><kbd>Ctrl K</kbd></label>
+      <div class="top-actions">
+        <span id="syncPill" class="sync-pill local"><i></i><span>ذخیره خودکار + فایل متنی</span></span>
+        <button id="syncButton" class="icon-button" title="ذخیره یا بازیابی فایل متنی پروژه" aria-label="فایل پروژه">⇅</button>
+        <button id="themeButton" class="icon-button" title="تغییر حال‌وهوا" aria-label="تغییر حال‌وهوا">☼</button>
+        <button id="settingsButton" class="avatar-button" title="تنظیمات">ع</button>
+      </div>
+    </header>
+
+    <aside class="left-rail">
+      <nav class="nav glass" aria-label="ناوبری اصلی">
+        <button class="nav-item active" data-view="write"><span>✎</span> میز نوشتن</button>
+        <button class="nav-item" data-view="chapters"><span>▤</span> فصل‌ها <em id="chapterNavCount">۱</em></button>
+        <button class="nav-item" data-view="notes"><span>▧</span> یادداشت‌ها <em id="noteNavCount">۰</em></button>
+        <button class="nav-item" data-view="timeline"><span>◷</span> خط زمانی</button>
+        <button class="nav-item" data-view="characters"><span>♙</span> شخصیت‌ها</button>
+        <button class="nav-item" data-view="collections"><span>◇</span> دسته‌بندی‌ها</button>
+      </nav>
+      <section class="project-card glass">
+        <div class="section-label">پروژه‌ی فعال</div>
+        <div class="project-identity"><div class="book-cover"><span>✦</span></div><div class="project-copy"><strong id="projectTitleSidebar">رمان من</strong><small id="projectMetaSidebar">بدون ژانر · پیش‌نویس</small></div><button class="mini-button" id="editProjectButton" title="ویرایش نام رمان">✎</button></div>
+        <div class="progress-head"><span>پیشرفت رمان</span><b id="progressPercent">۲۳٪</b></div>
+        <div class="progress-track"><span id="progressBar" style="width:0%"></span></div>
+        <div class="progress-foot"><span id="progressWords">۰ کلمه</span><span id="progressChapters">۱ فصل</span></div>
+      </section>
+      <div class="sidebar-hint glass"><div class="hint-symbol">↓</div><strong>ابزارهای سریع</strong><p>نسخه‌ی پشتیبان را جدا از مرورگر نگه دار تا نوشته‌هایت امن بمانند.</p><button id="quickBackupButton" class="secondary-button quick-action">ذخیره‌ی پشتیبان</button><button id="quickWordExportButton" class="secondary-button quick-action">خروجی Word کل رمان</button></div>
+      <div class="sidebar-bottom"><span class="online-dot"></span><span id="saveFootnote">ذخیره‌ی خودکار روشن است</span></div>
+    </aside>
+
+    <main class="workspace" id="mainWorkspace">
+      <section class="welcome-row">
+        <div><p class="eyebrow">اتاق نویسندگی تو</p><h1 id="mainProjectTitle">رمان من <button class="inline-edit" id="editMainTitle" title="ویرایش نام رمان">✎</button></h1><p class="subhead">ایده‌ها را مرتب کن؛ باقی را به خیال بسپار.</p></div>
+        <button id="newChapterButton" class="primary-button"><span>＋</span> فصل تازه</button>
+      </section>
+
+      <section class="editor-card glass" id="editorView">
+        <div class="editor-topline">
+          <div class="chapter-select-wrap"><span class="chapter-glyph">▤</span><select id="chapterSelect" aria-label="انتخاب فصل"></select><button id="chapterMenuButton" class="soft-icon" title="گزینه‌های فصل">•••</button></div>
+          <div class="save-status"><span class="save-dot"></span><span id="saveStatusText">همه‌چیز ذخیره شد</span><span class="separator">·</span><span id="saveTime">همین الان</span></div>
+        </div>
+        <div class="toolbar" role="toolbar" aria-label="ابزارهای نوشتن">
+          <div class="tool-group"><button data-command="undo" title="واگرد (Ctrl+Z)">↶</button><button data-command="redo" title="انجام دوباره (Ctrl+Y)">↷</button></div>
+          <span class="tool-divider"></span>
+          <select id="blockFormat" aria-label="سبک متن"><option value="P">متن معمولی</option><option value="H1">عنوان بزرگ</option><option value="H2">عنوان بخش</option><option value="H3">زیرعنوان</option><option value="BLOCKQUOTE">نقل‌قول</option></select>
+          <select id="fontSize" aria-label="اندازه متن"><option value="3">معمولی</option><option value="2">کوچک</option><option value="4">بزرگ</option><option value="5">خیلی بزرگ</option><option value="6">بسیار بزرگ</option></select><select id="fontFamily" aria-label="نوع قلم"><option value="Tahoma">Tahoma</option><option value="Arial">Arial</option><option value="Georgia">Georgia</option><option value="Times New Roman">Times</option></select>
+          <span class="tool-divider"></span>
+          <div class="tool-group"><button data-command="bold" title="ضخیم (Ctrl+B)"><b>B</b></button><button data-command="italic" title="مورب (Ctrl+I)"><i>I</i></button><button data-command="underline" title="زیرخط (Ctrl+U)"><u>U</u></button><button data-command="strikeThrough" title="خط‌خورده"><s>S</s></button></div>
+          <span class="tool-divider"></span>
+          <div class="tool-group"><button data-command="justifyRight" title="راست‌چین">⇥</button><button data-command="justifyCenter" title="وسط‌چین">☰</button><button data-command="justifyFull" title="تراز دوطرفه">▤</button><button data-command="justifyLeft" title="چپ‌چین">⇤</button></div>
+          <span class="tool-divider"></span>
+          <div class="tool-group"><button data-command="insertUnorderedList" title="فهرست نشانه‌دار">•≡</button><button data-command="insertOrderedList" title="فهرست شماره‌دار">1≡</button><button data-command="indent" title="افزایش تورفتگی">⇥</button><button data-command="outdent" title="کاهش تورفتگی">⇤</button><button id="linkButton" title="افزودن پیوند">↗</button></div>
+          <span class="tool-divider"></span>
+          <div class="tool-group"><button id="tableButton" title="درج جدول ساده">▦</button><button id="highlightButton" title="هایلایت متن">▨</button><button data-command="subscript" title="زیرنویس">x₂</button><button data-command="superscript" title="بالانویس">x²</button><button data-command="insertHorizontalRule" title="خط جداکننده">―</button><label class="color-tool" title="رنگ متن">A<input id="textColorInput" type="color" value="#35416f" aria-label="رنگ متن"></label><button id="clearFormatButton" title="پاک‌کردن قالب‌بندی">Tx</button></div>
+        </div>
+        <div class="editor-title-row"><input id="chapterTitleInput" class="chapter-title-input" value="فصل اول" aria-label="عنوان فصل"><span class="chapter-badge" id="chapterWordBadge">۰ کلمه</span></div>
+        <div id="editor" class="rich-editor" contenteditable="true" spellcheck="true" lang="fa" aria-label="متن فصل" data-placeholder="داستانت از اینجا شروع می‌شود…"></div>
+        <div class="editor-footer"><div class="editor-metrics"><span><b id="wordCount">۰</b> کلمه</span><span><b id="charCount">۰</b> نویسه</span><span><b id="readingTime">کمتر از یک دقیقه</b> زمان مطالعه</span></div><div class="editor-footer-actions"><button class="text-button" id="focusModeButton">⛶ تمرکز</button><button class="text-button" id="exportChapterButton">↓ متن فصل</button><button class="text-button" id="exportWordChapterButton">▤ خروجی Word</button></div></div>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="mini-panel glass"><div class="panel-heading"><div><span class="panel-icon purple">◇</span><h3>برچسب‌های رمان</h3></div><button class="round-plus" id="addTagButton" title="افزودن برچسب">＋</button></div><div class="tag-list" id="tagList"></div></article>
+        <article class="mini-panel glass"><div class="panel-heading"><div><span class="panel-icon blue">✦</span><h3>یادداشت‌های سنجاق‌شده</h3></div><button class="round-plus" id="addNoteButton" title="یادداشت تازه">＋</button></div><div class="pinned-list" id="pinnedNotes"></div></article>
+        <article class="mini-panel stats-panel glass"><div class="panel-heading"><div><span class="panel-icon green">↗</span><h3>آمار نوشتن</h3></div><button class="round-plus" id="goalButton" title="تعیین هدف روزانه">⚙</button></div><div class="stats-main"><div><strong id="totalWordStat">۰</strong><small>کلمه در کل رمان</small></div><div class="goal-ring" id="goalRing"><span id="goalPercent">۰٪</span></div></div><div class="goal-caption"><span>هدف روزانه</span><b id="goalLabel">۵۰۰ کلمه</b></div><div class="stats-track"><span id="goalBar" style="width:0%"></span></div></article>
+      </section>
+    </main>
+
+    <aside class="right-rail">
+      <section class="right-panel glass"><div class="panel-heading"><div><span class="panel-icon purple">▤</span><h3>فصل‌های رمان</h3><small id="chapterCountLabel">۱ فصل</small></div><button class="round-plus" id="rightNewChapter" title="فصل تازه">＋</button></div><div class="chapter-list" id="chapterList"></div><button class="panel-link" data-view="chapters">مدیریت همه فصل‌ها ←</button></section>
+      <section class="right-panel glass"><div class="panel-heading"><div><span class="panel-icon peach">▧</span><h3>یادداشت‌ها</h3><small>ایده‌ها و جزئیات مهم</small></div><button class="round-plus" id="rightNewNote" title="یادداشت تازه">＋</button></div><div class="note-preview-list" id="notePreviewList"></div><button class="panel-link" data-view="notes">رفتن به دفتر یادداشت ←</button></section>
+      <section class="right-panel glass timeline-preview"><div class="panel-heading"><div><span class="panel-icon blue">◷</span><h3>خط زمانی</h3><small>رویدادهای کلیدی داستان</small></div><button class="round-plus" id="rightNewEvent" title="رویداد تازه">＋</button></div><div class="timeline-mini" id="timelineMini"></div><button class="panel-link" data-view="timeline">مرتب‌سازی رویدادها ←</button></section>
+    </aside>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+
+  <dialog id="genericDialog" class="dialog-card glass"><form method="dialog" id="genericForm"><div class="dialog-heading"><div><span class="eyebrow" id="dialogEyebrow">فضای داستان</span><h2 id="dialogTitle">عنوان</h2></div><button type="button" class="close-button" data-close-dialog aria-label="بستن">×</button></div><div id="dialogBody" class="dialog-body"></div><div class="dialog-actions" id="dialogActions"><button type="button" class="secondary-button" data-close-dialog>انصراف</button><button type="submit" class="primary-button" id="dialogSubmit">ذخیره</button></div></form></dialog>
+
+
+
+  <dialog id="searchDialog" class="dialog-card glass search-dialog"><div class="dialog-heading"><div><span class="eyebrow">پیدا کردن سریع</span><h2>جست‌وجو در داستان</h2></div><button type="button" class="close-button" data-close-search>×</button></div><input id="searchDialogInput" class="wide-input" type="search" placeholder="یک کلمه، شخصیت یا یادداشت بنویس…"><div id="searchResults" class="search-results"></div></dialog>
+</body>
+</html>
